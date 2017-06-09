@@ -1,0 +1,31 @@
+<p-dataTable [value]="playerService.getPlayers()" selectionMode="single" [(selection)]="player" [contextMenu]="cm" sortField="name" sortOrder="1">
+  <p-column field="id" header="ID"></p-column>
+  <p-column field="name" header="Name" [sortable]="true"></p-column>
+  <p-column field="debuff" header="Debuff" [sortable]="true"></p-column>
+</p-dataTable>
+<button pButton (click)="showDialogToAdd()" label="add"></button>
+<p-dialog header="Player Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true">
+  <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="player">
+    <div class="ui-g">
+      <div class="ui-g-4"><label for="id">ID</label></div>
+      <div class="ui-g-6"><input pInputText id="id" [(ngModel)]="player.id" [disabled]="disabledInput" /></div>
+    </div>
+    <div class="ui-g">
+      <div class="ui-g-4"><label for="name">Name</label></div>
+      <div class="ui-g-6"><input pInputText id="name" [(ngModel)]="player.name" /></div>
+    </div>
+    <div class="ui-g">
+      <div class="ui-g-4"><label for="debuff">Debuff</label></div>
+      <div class="ui-g-6"><input pInputText id="debuff" [(ngModel)]="player.debuff" [disabled]="disabledInput" /></div>
+    </div>
+  </div>
+  <p-footer>
+    <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+      <button *ngIf="!newPlayer" type="button" pButton icon="fa-close" (click)="onRemoveClick()" label="Delete"></button>
+      <button *ngIf="!newPlayer" type="button" pButton icon="fa-check" (click)="onSaveClick()" label="Save"></button>
+      <button *ngIf="newPlayer" type="button" pButton icon="fa-check" (click)="onAddClick()" label="Add"></button>
+    </div>
+  </p-footer>
+</p-dialog>
+<p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425"></p-confirmDialog>
+<p-contextMenu #cm [model]="contextMenuItems"></p-contextMenu>
