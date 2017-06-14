@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 
 import {Observable} from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
 
 import {StompConfig, StompConfigService} from '@stomp/ng2-stompjs';
 

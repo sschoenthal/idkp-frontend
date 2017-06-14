@@ -1,8 +1,17 @@
-<p-dataTable [value]="playerService.getPlayers()" selectionMode="single" [(selection)]="player" [contextMenu]="cm" sortField="name" sortOrder="1">
-  <p-column field="id" header="ID"></p-column>
-  <p-column field="name" header="Name" [sortable]="true"></p-column>
-  <p-column field="debuff" header="Debuff" [sortable]="true"></p-column>
-</p-dataTable>
+<table>
+  <tr>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Debuff</th>
+    <th>Action</th>
+  </tr>
+  <tr *ngFor="let player of (playerService.getPlayers() | async)">
+    <td>{{ player.id }}</td>
+    <td>{{ player.name }}</td>
+    <td>{{ player.debuff }}</td>
+    <td><button pButton (click)="showDialogToEdit(player)" label="edit"></button></td>
+  </tr>
+</table>
 <button pButton (click)="showDialogToAdd()" label="add"></button>
 <p-dialog header="Player Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true">
   <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="player">
@@ -28,4 +37,3 @@
   </p-footer>
 </p-dialog>
 <p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425"></p-confirmDialog>
-<p-contextMenu #cm [model]="contextMenuItems"></p-contextMenu>

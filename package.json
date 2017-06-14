@@ -22,8 +22,10 @@
     "@angular/platform-browser-dynamic": "^4.0.0",
     "@angular/router": "^4.0.0",
     "@stomp/ng2-stompjs": "^0.3.0",
+    "@types/lodash": "^4.14.66",
     "core-js": "^2.4.1",
     "font-awesome": "^4.7.0",
+    "lodash": "^4.17.4",
     "primeng": "^4.0.1",
     "rxjs": "^5.1.0",
     "zone.js": "^0.8.4"

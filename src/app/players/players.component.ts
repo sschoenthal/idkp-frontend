@@ -1,6 +1,8 @@
 import {Component} from '@angular/core';
 
-import {ConfirmationService, MenuItem} from 'primeng/primeng';
+import {ConfirmationService} from 'primeng/primeng';
+
+import * as _ from 'lodash';
 
 import {PlayerService} from './shared/services/player.service';
 import {Player} from './shared/models/player.model';
@@ -16,29 +18,25 @@ export class PlayersComponent {
   displayDialog: boolean;
   disabledInput: boolean = true;
   newPlayer: boolean;
-  player: Player = new PrimePlayer();
-
-  contextMenuItems: MenuItem[] = [
-    {label: 'View', icon: 'fa-search', command: (event) => this.showDialogToEdit()},
-    {label: 'Delete', icon: 'fa-close', command: (event) => this.onRemoveClick()}
-  ];
+  player: Player = new NewPlayer();
 
   constructor(public playerService: PlayerService,
               private confirmationService: ConfirmationService) {
   }
 
-  showDialogToAdd() {
+  showDialogToAdd(): void {
     this.newPlayer = true;
-    this.player = new PrimePlayer();
+    this.player = new NewPlayer();
     this.displayDialog = true;
   }
 
-  private showDialogToEdit() {
+  showDialogToEdit(player: Player): void {
     this.newPlayer = false;
+    this.player = _.cloneDeep(player);
     this.displayDialog = true;
   }
 
-  onRemoveClick() {
+  onRemoveClick(): void {
     this.confirmationService.confirm({
       message: 'Do you want to delete the selected record?',
       header: 'Confirmation',
@@ -50,17 +48,17 @@ export class PlayersComponent {
     });
   }
 
-  onSaveClick() {
+  onSaveClick(): void {
     this.playerService.update(this.player.id, this.player.name);
     this.displayDialog = false;
   }
 
-  onAddClick() {
+  onAddClick(): void {
     this.playerService.create(this.player.name);
     this.displayDialog = false;
   }
 }
-class PrimePlayer implements Player {
+class NewPlayer implements Player {
 
   constructor() {
   }

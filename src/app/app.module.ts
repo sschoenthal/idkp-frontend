@@ -26,11 +26,9 @@ const routes: Routes = [];
     BrowserAnimationsModule,
     ButtonModule,
     InputTextModule,
-    DataTableModule,
     SharedModule,
     DialogModule,
     ConfirmDialogModule,
-    ContextMenuModule,
     RouterModule.forRoot(routes, {useHash: true})
   ],
   providers: [
