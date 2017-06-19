@@ -2,10 +2,14 @@ import {Component} from '@angular/core';
 
 import {ConfirmationService} from 'primeng/primeng';
 
+import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+
 import * as _ from 'lodash';
 
 import {PlayerService} from './shared/services/player.service';
 import {Player} from './shared/models/player.model';
+import {Pagination} from '../common/utils/pagination.util';
+import {Observable} from "rxjs/Observable";
 
 @Component({
   selector: 'app-players',
@@ -15,13 +19,25 @@ import {Player} from './shared/models/player.model';
 })
 export class PlayersComponent {
 
+  public pageSizeSelectOptions: PageSizeSelectOption[] = [
+    new PageSizeSelectOption(5, 'small'),
+    new PageSizeSelectOption(10, 'medium'),
+    new PageSizeSelectOption(20, 'large')
+  ];
+
   displayDialog: boolean;
-  disabledInput: boolean = true;
   newPlayer: boolean;
   player: Player = new NewPlayer();
 
-  constructor(public playerService: PlayerService,
+  pagination: Pagination;
+
+  constructor(private playerService: PlayerService,
               private confirmationService: ConfirmationService) {
+    this.pagination = playerService.getPagination();
+  }
+
+  getPlayers(): Observable<Player[]> {
+    return (this.playerService.getPlayers());
   }
 
   showDialogToAdd(): void {
@@ -63,3 +79,14 @@ class NewPlayer implements Player {
   constructor() {
   }
 }
+class PageSizeSelectOption {
+  size: number;
+  name: string;
+
+  constructor(size: number, name: string) {
+    this.size = size;
+    this.name = name;
+  }
+}
+
+

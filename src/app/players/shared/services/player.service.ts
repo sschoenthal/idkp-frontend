@@ -15,6 +15,8 @@ import * as _ from 'lodash';
 
 import {Player} from '.././models/player.model'
 import {PlayerChange} from "../models/playerChange.model";
+import {Pagination} from '../../../common/utils/pagination.util';
+import {Pageable} from "../../../common/utils/pageable.model";
 
 @Injectable()
 export class PlayerService {
@@ -22,17 +24,31 @@ export class PlayerService {
   private REST_URI: string = '/idkp/player/';
 
   private players: BehaviorSubject<Player[]> = new BehaviorSubject([]);
+  private pagination: BehaviorSubject<Pagination> = new BehaviorSubject(new Pagination(0, 5, 'name'));
 
-  private subscription: Subscription;
-  private messages: Observable<Message>;
+  private webSocketSubscription: Subscription;
+  private webSocketMessages: Observable<Message>;
 
   constructor(private http: Http, private stompService: StompService) {
-    this.load();
+    this.pagination.getValue().attachSubject(this.pagination);
+    this.pagination
+      .subscribe({
+        next: (pagination: Pagination) => this.load()
+      });
+  }
+
+  public getPagination(): Pagination {
+    return (this.pagination.getValue());
+  }
+
+  public getPlayers(): Observable<Player[]> {
+    return (this.players.publishReplay(1).refCount());
   }
 
   private load(): void {
-    this.http.get(this.REST_URI)
-      .map(res => <Player[]>res.json())
+    this.http.get(this.REST_URI + this.pagination.getValue().toReqParamURIPart())
+      .do(res => this.pagination.getValue().fromResponse(<Pageable>res.json()))
+      .map(res => <Player[]>res.json().content)
       .subscribe(
         p => this.players.next(p),
         this.handleError,
@@ -61,10 +77,6 @@ export class PlayerService {
         this.handleComplete);
   }
 
-  public getPlayers(): Observable<Player[]> {
-    return this.players.publishReplay(1).refCount();
-  }
-
   private handleComplete(): void {
     console.info('Observable completed');
   }
@@ -75,8 +87,10 @@ export class PlayerService {
   }
 
   private subscribeToPlayerTopic = (): void => {
-    this.messages = this.stompService.subscribe('/idkp/topic/players');
-    this.subscription = this.messages.subscribe(this.playerChanged);
+    if (this.webSocketSubscription == null) {
+      this.webSocketMessages = this.stompService.subscribe('/idkp/topic/players');
+      this.webSocketSubscription = this.webSocketMessages.subscribe(this.playerChanged);
+    }
   }
 
   private playerChanged = (message: Message): void => {
@@ -84,6 +98,8 @@ export class PlayerService {
     switch (playerChange.changeType) {
       case "CREATED": {
         this.addPlayerToSubject(playerChange.player);
+        this.pagination.getValue().totalElements.next(this.pagination.getValue().totalElements.getValue() + 1);
+        this.pagination.getValue().pageElements.next(this.players.getValue().length);
         break;
       }
       case "UPDATED": {
@@ -92,6 +108,8 @@ export class PlayerService {
       }
       case "REMOVED": {
         this.removePlayerFromSubject(playerChange.player);
+        this.pagination.getValue().totalElements.next(this.pagination.getValue().totalElements.getValue() - 1);
+        this.pagination.getValue().pageElements.next(this.players.getValue().length);
         break;
       }
     }

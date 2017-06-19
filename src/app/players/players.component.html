@@ -1,3 +1,31 @@
+<button pButton (click)="showDialogToAdd()" label="add"></button>
+<select name="perPage" [ngModel]="pagination.perPageSize | async" (ngModelChange)="pagination.perPageSize.next($event)">
+  <option
+    *ngFor="let perPageOption of pageSizeSelectOptions"
+    [ngValue]="perPageOption.size">
+    {{perPageOption.name}}
+  </option>
+</select>
+<select name="orderBy" [ngModel]="pagination.sortProperty | async" (ngModelChange)="pagination.sortProperty.next($event)">
+  <option
+    *ngFor="let sortProperty of ['id','name','debuff']"
+    [ngValue]="sortProperty">
+    {{sortProperty}}
+  </option>
+</select>
+<select name="order" [ngModel]="pagination.sortOrder | async" (ngModelChange)="pagination.sortOrder.next($event)">
+  <option
+    *ngFor="let sortOrder of ['asc','desc']"
+    [ngValue]="sortOrder">
+    {{sortOrder}}
+  </option>
+</select>
+(pageElements:{{pagination.pageElements | async}}/totalElements:{{pagination.totalElements | async}})
+<button pButton
+        *ngFor="let page of pagination.getPages() | async"
+        label="{{page}}"
+        [disabled]="page === pagination.page.getValue()"
+        (click)="pagination.page.next(page)"></button>
 <table>
   <tr>
     <th>ID</th>
@@ -5,32 +33,34 @@
     <th>Debuff</th>
     <th>Action</th>
   </tr>
-  <tr *ngFor="let player of (playerService.getPlayers() | async)">
+  <tr *ngFor="let player of (getPlayers() | async)">
     <td>{{ player.id }}</td>
     <td>{{ player.name }}</td>
     <td>{{ player.debuff }}</td>
-    <td><button pButton (click)="showDialogToEdit(player)" label="edit"></button></td>
+    <td>
+      <button pButton (click)="showDialogToEdit(player)" label="edit"></button>
+    </td>
   </tr>
 </table>
-<button pButton (click)="showDialogToAdd()" label="add"></button>
 <p-dialog header="Player Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true">
   <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="player">
     <div class="ui-g">
       <div class="ui-g-4"><label for="id">ID</label></div>
-      <div class="ui-g-6"><input pInputText id="id" [(ngModel)]="player.id" [disabled]="disabledInput" /></div>
+      <div class="ui-g-6"><input pInputText id="id" [(ngModel)]="player.id" disabled/></div>
     </div>
     <div class="ui-g">
       <div class="ui-g-4"><label for="name">Name</label></div>
-      <div class="ui-g-6"><input pInputText id="name" [(ngModel)]="player.name" /></div>
+      <div class="ui-g-6"><input pInputText id="name" [(ngModel)]="player.name"/></div>
     </div>
     <div class="ui-g">
       <div class="ui-g-4"><label for="debuff">Debuff</label></div>
-      <div class="ui-g-6"><input pInputText id="debuff" [(ngModel)]="player.debuff" [disabled]="disabledInput" /></div>
+      <div class="ui-g-6"><input pInputText id="debuff" [(ngModel)]="player.debuff" disabled/></div>
     </div>
   </div>
   <p-footer>
     <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
-      <button *ngIf="!newPlayer" type="button" pButton icon="fa-close" (click)="onRemoveClick()" label="Delete"></button>
+      <button *ngIf="!newPlayer" type="button" pButton icon="fa-close" (click)="onRemoveClick()"
+              label="Delete"></button>
       <button *ngIf="!newPlayer" type="button" pButton icon="fa-check" (click)="onSaveClick()" label="Save"></button>
       <button *ngIf="newPlayer" type="button" pButton icon="fa-check" (click)="onAddClick()" label="Add"></button>
     </div>

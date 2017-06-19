@@ -5,7 +5,7 @@ import {HttpModule} from '@angular/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {Routes, RouterModule} from '@angular/router';
 
-import {ButtonModule, InputTextModule, DataTableModule, SharedModule, DialogModule, ContextMenuModule, ConfirmDialogModule} from 'primeng/primeng';
+import {ButtonModule, InputTextModule, SharedModule, DialogModule, ConfirmDialogModule} from 'primeng/primeng';
 import {StompConfigService, StompService} from "@stomp/ng2-stompjs";
 
 import {AppComponent} from './app.component';
