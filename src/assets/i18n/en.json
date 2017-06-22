@@ -1,0 +1,48 @@
+{
+  "YES": "yes",
+  "NO": "no",
+  "HOME": {
+    "PLAYER": "Player"
+  },
+  "PLAYER": {
+    "LIST": {
+      "PERPAGE": {
+        "SMALL": "small",
+        "MEDIUM": "medium",
+        "LARGE": "large"
+      },
+      "SORTPROPERTY": {
+        "ID": "id",
+        "NAME": "name",
+        "DEBUFF": "debuff"
+      },
+      "SORTORDER": {
+        "ASC": "ascending",
+        "DESC": "descending"
+      },
+      "ELEMENTS": "list elements",
+      "TOTALELEMENTS": "total elements"
+    },
+    "CONFIRM": {
+      "DELETE": {
+        "HEADER": "Delete confirmation",
+        "MESSAGE": "Are You sure You want do delete player {{value}}?"
+      }
+    },
+    "DETAILS": {
+      "HEADER": "Player details",
+      "ACTION": {
+        "HEADER": "Action",
+        "SAVE": "save",
+        "DELETE": "delete",
+        "ADD": "add",
+        "EDIT": "edit"
+      },
+      "FIELD": {
+        "ID": "Id",
+        "NAME": "Name",
+        "DEBUFF": "Debuff"
+      }
+    }
+  }
+}

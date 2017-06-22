@@ -1,69 +1,80 @@
-<button pButton (click)="showDialogToAdd()" label="add"></button>
-<select name="perPage" [ngModel]="pagination.perPageSize | async" (ngModelChange)="pagination.perPageSize.next($event)">
+<button pButton (click)="showDialogToAdd()" label="{{'PLAYER.DETAILS.ACTION.ADD' | translate}}"></button>
+<select name="perPage" [ngModel]="pagination.getPerPageSize() | async"
+        (ngModelChange)="pagination.setPerPageSizeValue($event)">
   <option
     *ngFor="let perPageOption of pageSizeSelectOptions"
     [ngValue]="perPageOption.size">
-    {{perPageOption.name}}
+    {{perPageOption.name | translate}}
   </option>
 </select>
-<select name="orderBy" [ngModel]="pagination.sortProperty | async" (ngModelChange)="pagination.sortProperty.next($event)">
+<select name="orderBy" [ngModel]="pagination.getSortProperty() | async"
+        (ngModelChange)="pagination.setSortPropertyValue($event)">
   <option
-    *ngFor="let sortProperty of ['id','name','debuff']"
-    [ngValue]="sortProperty">
-    {{sortProperty}}
+    *ngFor="let sortProperty of [['id','PLAYER.LIST.SORTPROPERTY.ID'],['name','PLAYER.LIST.SORTPROPERTY.NAME'],['debuff','PLAYER.LIST.SORTPROPERTY.DEBUFF']]"
+    [ngValue]="sortProperty[0]">
+    {{sortProperty[1] | translate}}
   </option>
 </select>
-<select name="order" [ngModel]="pagination.sortOrder | async" (ngModelChange)="pagination.sortOrder.next($event)">
+<select name="order" [ngModel]="pagination.getSortOrder() | async"
+        (ngModelChange)="pagination.setSortOrderValue($event)">
   <option
-    *ngFor="let sortOrder of ['asc','desc']"
-    [ngValue]="sortOrder">
-    {{sortOrder}}
+    *ngFor="let sortOrder of [['asc', 'PLAYER.LIST.SORTORDER.ASC'],['desc','PLAYER.LIST.SORTORDER.DESC']]"
+    [ngValue]="sortOrder[0]">
+    {{sortOrder[1] | translate}}
   </option>
 </select>
-(pageElements:{{pagination.pageElements | async}}/totalElements:{{pagination.totalElements | async}})
+({{'PLAYER.LIST.ELEMENTS' | translate}}:{{pagination.getPageElements() | async}}/{{'PLAYER.LIST.TOTALELEMENTS' | translate}}:{{pagination.getTotalElements() | async}})
 <button pButton
         *ngFor="let page of pagination.getPages() | async"
         label="{{page}}"
-        [disabled]="page === pagination.page.getValue()"
-        (click)="pagination.page.next(page)"></button>
+        [disabled]="page === pagination.getPageValue()"
+        (click)="pagination.setPageValue(page)"></button>
 <table>
   <tr>
-    <th>ID</th>
-    <th>Name</th>
-    <th>Debuff</th>
-    <th>Action</th>
+    <th>{{'PLAYER.DETAILS.FIELD.ID' | translate}}</th>
+    <th>{{'PLAYER.DETAILS.FIELD.NAME' | translate}}</th>
+    <th>{{'PLAYER.DETAILS.FIELD.DEBUFF' | translate}}</th>
+    <th>{{'PLAYER.DETAILS.ACTION.HEADER' | translate}}</th>
   </tr>
   <tr *ngFor="let player of (getPlayers() | async)">
     <td>{{ player.id }}</td>
     <td>{{ player.name }}</td>
     <td>{{ player.debuff }}</td>
     <td>
-      <button pButton (click)="showDialogToEdit(player)" label="edit"></button>
+      <button pButton (click)="showDialogToEdit(player)" label="{{'PLAYER.DETAILS.ACTION.EDIT' | translate}}"></button>
     </td>
   </tr>
 </table>
-<p-dialog header="Player Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true">
+<p-dialog header="{{'PLAYER.DETAILS.HEADER' | translate}}" [(visible)]="displayDialog" [responsive]="true"
+          showEffect="fade" [modal]="true">
   <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="player">
     <div class="ui-g">
-      <div class="ui-g-4"><label for="id">ID</label></div>
+      <div class="ui-g-4"><label for="id">{{'PLAYER.DETAILS.FIELD.ID' | translate}}</label></div>
       <div class="ui-g-6"><input pInputText id="id" [(ngModel)]="player.id" disabled/></div>
     </div>
     <div class="ui-g">
-      <div class="ui-g-4"><label for="name">Name</label></div>
+      <div class="ui-g-4"><label for="name">{{'PLAYER.DETAILS.FIELD.NAME' | translate}}</label></div>
       <div class="ui-g-6"><input pInputText id="name" [(ngModel)]="player.name"/></div>
     </div>
     <div class="ui-g">
-      <div class="ui-g-4"><label for="debuff">Debuff</label></div>
+      <div class="ui-g-4"><label for="debuff">{{'PLAYER.DETAILS.FIELD.DEBUFF' | translate}}</label></div>
       <div class="ui-g-6"><input pInputText id="debuff" [(ngModel)]="player.debuff" disabled/></div>
     </div>
   </div>
   <p-footer>
     <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
       <button *ngIf="!newPlayer" type="button" pButton icon="fa-close" (click)="onRemoveClick()"
-              label="Delete"></button>
-      <button *ngIf="!newPlayer" type="button" pButton icon="fa-check" (click)="onSaveClick()" label="Save"></button>
-      <button *ngIf="newPlayer" type="button" pButton icon="fa-check" (click)="onAddClick()" label="Add"></button>
+              label="{{'PLAYER.DETAILS.ACTION.DELETE' | translate}}"></button>
+      <button *ngIf="!newPlayer" type="button" pButton icon="fa-check" (click)="onSaveClick()"
+              label="{{'PLAYER.DETAILS.ACTION.SAVE' | translate}}"></button>
+      <button *ngIf="newPlayer" type="button" pButton icon="fa-check" (click)="onAddClick()"
+              label="{{'PLAYER.DETAILS.ACTION.ADD' | translate}}"></button>
     </div>
   </p-footer>
 </p-dialog>
-<p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425"></p-confirmDialog>
+<p-confirmDialog width="425" #cd>
+  <p-footer>
+    <button type="button" pButton icon="fa-close" label="{{'NO' | translate}}" (click)="cd.reject()"></button>
+    <button type="button" pButton icon="fa-check" label="{{'YES' | translate}}" (click)="cd.accept()"></button>
+  </p-footer>
+</p-confirmDialog>

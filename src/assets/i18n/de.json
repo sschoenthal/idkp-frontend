@@ -1,0 +1,48 @@
+{
+  "YES": "ja",
+  "NO": "nein",
+  "HOME": {
+    "PLAYER": "Spieler"
+  },
+  "PLAYER": {
+    "LIST": {
+      "PERPAGE": {
+        "SMALL": "klein",
+        "MEDIUM": "mittel",
+        "LARGE": "gross"
+      },
+      "SORTPROPERTY": {
+        "ID": "id",
+        "NAME": "name",
+        "DEBUFF": "debuff"
+      },
+      "SORTORDER": {
+        "ASC": "aufsteigend",
+        "DESC": "absteigend"
+      },
+      "ELEMENTS": "Angezeigt",
+      "TOTALELEMENTS": "Total"
+    },
+    "CONFIRM": {
+      "DELETE": {
+        "HEADER": "Löschen bestätigen",
+        "MESSAGE": "Bist Du sicher dass Du den Spieler {{value}} löschen möchtest?"
+      }
+    },
+    "DETAILS": {
+      "HEADER": "Spieler Details",
+      "ACTION": {
+        "HEADER": "Aktion",
+        "SAVE": "speichern",
+        "DELETE": "löschen",
+        "ADD": "hinzufügen",
+        "EDIT": "bearbeiten"
+      },
+      "FIELD": {
+        "ID": "Id",
+        "NAME": "Name",
+        "DEBUFF": "Debuff"
+      }
+    }
+  }
+}

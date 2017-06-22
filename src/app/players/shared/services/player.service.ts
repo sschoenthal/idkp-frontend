@@ -24,21 +24,20 @@ export class PlayerService {
   private REST_URI: string = '/idkp/player/';
 
   private players: BehaviorSubject<Player[]> = new BehaviorSubject([]);
-  private pagination: BehaviorSubject<Pagination> = new BehaviorSubject(new Pagination(0, 5, 'name'));
+  private pagination: Pagination = new Pagination(0, 5, 'name');
 
   private webSocketSubscription: Subscription;
   private webSocketMessages: Observable<Message>;
 
   constructor(private http: Http, private stompService: StompService) {
-    this.pagination.getValue().attachSubject(this.pagination);
-    this.pagination
+    this.pagination.getObservable()
       .subscribe({
         next: (pagination: Pagination) => this.load()
       });
   }
 
   public getPagination(): Pagination {
-    return (this.pagination.getValue());
+    return (this.pagination);
   }
 
   public getPlayers(): Observable<Player[]> {
@@ -46,8 +45,8 @@ export class PlayerService {
   }
 
   private load(): void {
-    this.http.get(this.REST_URI + this.pagination.getValue().toReqParamURIPart())
-      .do(res => this.pagination.getValue().fromResponse(<Pageable>res.json()))
+    this.http.get(this.REST_URI + this.pagination.toReqParamURIPart())
+      .do(res => this.pagination.fromResponse(<Pageable>res.json()))
       .map(res => <Player[]>res.json().content)
       .subscribe(
         p => this.players.next(p),
@@ -97,19 +96,15 @@ export class PlayerService {
     var playerChange: PlayerChange = JSON.parse(message.body);
     switch (playerChange.changeType) {
       case "CREATED": {
-        this.addPlayerToSubject(playerChange.entity);
-        this.pagination.getValue().totalElements.next(this.pagination.getValue().totalElements.getValue() + 1);
-        this.pagination.getValue().pageElements.next(this.players.getValue().length);
+        this.addPlayerToSubject(playerChange.notifyable);
         break;
       }
       case "UPDATED": {
-        this.updatePlayerInSubject(playerChange.entity);
+        this.updatePlayerInSubject(playerChange.notifyable);
         break;
       }
       case "REMOVED": {
-        this.removePlayerFromSubject(playerChange.entity);
-        this.pagination.getValue().totalElements.next(this.pagination.getValue().totalElements.getValue() - 1);
-        this.pagination.getValue().pageElements.next(this.players.getValue().length);
+        this.removePlayerFromSubject(playerChange.notifyable);
         break;
       }
     }

@@ -1,4 +1,12 @@
+<select name="language" [ngModel]="language"
+        (ngModelChange)="setLanguage($event)">
+  <option
+    *ngFor="let langProperty of [['en','English'],['de','Deutsch']]"
+    [ngValue]="langProperty[0]">
+    {{langProperty[1]}}
+  </option>
+</select>
 <h1>
-  {{title}}
+  {{title | translate}}
 </h1>
 <app-players></app-players>
