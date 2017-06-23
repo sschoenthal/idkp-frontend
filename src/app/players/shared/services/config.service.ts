@@ -13,7 +13,7 @@ export class ConfigService extends StompConfigService {
 
   public get(): Observable<StompConfig> {
     const conf: StompConfig = {
-      url: "ws://127.0.0.1:8084/idkp/players-websocket/websocket",
+      url: this.getWSURL(),
       headers: {
         login: "guest",
         passcode: "guest"
@@ -24,5 +24,17 @@ export class ConfigService extends StompConfigService {
       debug: true
     };
     return Observable.of(conf);
+  }
+
+  private getWSURL(): string {
+    var loc = window.location, new_uri;
+    if (loc.protocol === "https:") {
+      new_uri = "wss:";
+    } else {
+      new_uri = "ws:";
+    }
+    new_uri += "//" + loc.host;
+    new_uri += loc.pathname + "/players-websocket/websocket";
+    return new_uri;
   }
 }
