@@ -30,7 +30,7 @@ export class PlayerService {
   private webSocketMessages: Observable<Message>;
 
   constructor(private http: Http, private stompService: StompService) {
-    this.pagination.getObservable()
+    this.pagination.getNavigationObservable()
       .subscribe({
         next: (pagination: Pagination) => this.load()
       });

@@ -1,34 +1,34 @@
 <button pButton (click)="showDialogToAdd()" label="{{'PLAYER.DETAILS.ACTION.ADD' | translate}}"></button>
-<select name="perPage" [ngModel]="pagination.getPerPageSize() | async"
-        (ngModelChange)="pagination.setPerPageSizeValue($event)">
+<select name="perPage" [ngModel]="(pagination.getObservable() | async).getPerPageSize()"
+        (ngModelChange)="pagination.setPerPageSize($event)">
   <option
     *ngFor="let perPageOption of pageSizeSelectOptions"
     [ngValue]="perPageOption.size">
     {{perPageOption.name | translate}}
   </option>
 </select>
-<select name="orderBy" [ngModel]="pagination.getSortProperty() | async"
-        (ngModelChange)="pagination.setSortPropertyValue($event)">
+<select name="orderBy" [ngModel]="(pagination.getObservable() | async).getSortProperty()"
+        (ngModelChange)="pagination.setSortProperty($event)">
   <option
     *ngFor="let sortProperty of [['id','PLAYER.LIST.SORTPROPERTY.ID'],['name','PLAYER.LIST.SORTPROPERTY.NAME'],['debuff','PLAYER.LIST.SORTPROPERTY.DEBUFF']]"
     [ngValue]="sortProperty[0]">
     {{sortProperty[1] | translate}}
   </option>
 </select>
-<select name="order" [ngModel]="pagination.getSortOrder() | async"
-        (ngModelChange)="pagination.setSortOrderValue($event)">
+<select name="order" [ngModel]="(pagination.getObservable() | async).getSortOrder()"
+        (ngModelChange)="pagination.setSortOrder($event)">
   <option
     *ngFor="let sortOrder of [['asc', 'PLAYER.LIST.SORTORDER.ASC'],['desc','PLAYER.LIST.SORTORDER.DESC']]"
     [ngValue]="sortOrder[0]">
     {{sortOrder[1] | translate}}
   </option>
 </select>
-({{'PLAYER.LIST.ELEMENTS' | translate}}:{{pagination.getPageElements() | async}}/{{'PLAYER.LIST.TOTALELEMENTS' | translate}}:{{pagination.getTotalElements() | async}})
+({{'PLAYER.LIST.ELEMENTS' | translate}}:{{(pagination.getObservable() | async).getPageElements()}}/{{'PLAYER.LIST.TOTALELEMENTS' | translate}}:{{(pagination.getObservable() | async).getTotalElements()}})
 <button pButton
-        *ngFor="let page of pagination.getPages() | async"
+        *ngFor="let page of (pagination.getObservable() | async).getPages()"
         label="{{page}}"
-        [disabled]="page === pagination.getPageValue()"
-        (click)="pagination.setPageValue(page)"></button>
+        [disabled]="page === pagination.getPage()"
+        (click)="pagination.setPage(page)"></button>
 <table>
   <tr>
     <th>{{'PLAYER.DETAILS.FIELD.ID' | translate}}</th>

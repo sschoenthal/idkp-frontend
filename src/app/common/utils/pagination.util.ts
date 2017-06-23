@@ -4,115 +4,85 @@ import {Observable} from "rxjs/Observable";
 
 export class Pagination {
 
-  private page: BehaviorSubject<number>;
-  private perPageSize: BehaviorSubject<number>;
-  private pages: BehaviorSubject<number[]>;
+  private page: number;
+  private perPageSize: number;
+  private pages: number[];
 
-  private pageElements: BehaviorSubject<number>;
-  private totalElements: BehaviorSubject<number>;
+  private pageElements: number;
+  private totalElements: number;
 
-  private sortProperty: BehaviorSubject<string>;
-  private sortOrder: BehaviorSubject<string>;
+  private sortProperty: string;
+  private sortOrder: string;
 
-  private subject: BehaviorSubject<Pagination>;
+  private navigationSubject: BehaviorSubject<Pagination>;
+  private dataSubject: BehaviorSubject<Pagination>;
 
   constructor(page: number, pageSize: number, sortProperty: string) {
-    this.page = new BehaviorSubject(page);
-    this.perPageSize = new BehaviorSubject(pageSize);
-    this.pages = new BehaviorSubject([0]);
-    this.pageElements = new BehaviorSubject(0);
-    this.totalElements = new BehaviorSubject(0);
-    this.sortProperty = new BehaviorSubject(sortProperty);
-    this.sortOrder = new BehaviorSubject('asc');
-    this.subject = new BehaviorSubject(this);
-    this.perPageSize.skip(1).subscribe({
-      next: (pageSize: number) => this.page.next(0)
-    });
-    this.page.skip(1).subscribe({
-      next: (page: number) => this.subject.next(this)
-    });
-    this.sortProperty.skip(1).subscribe({
-      next: (property: string) => this.subject.next(this)
-    });
-    this.sortOrder.skip(1).subscribe({
-      next: (order: string) => this.subject.next(this)
-    });
+    this.page = page;
+    this.perPageSize = pageSize;
+    this.pages = [0];
+    this.pageElements = 0;
+    this.totalElements = 0;
+    this.sortProperty = sortProperty;
+    this.sortOrder = 'asc';
+    this.navigationSubject = new BehaviorSubject(this);
+    this.dataSubject = new BehaviorSubject(this);
+  }
+
+  public getNavigationObservable(): Observable<Pagination> {
+    return (this.navigationSubject).publishReplay(1).refCount();
   }
 
   public getObservable(): Observable<Pagination> {
-    return (this.subject).publishReplay(1).refCount();
+    return (this.dataSubject).publishReplay(1).refCount();
   }
 
-  public getPage(): Observable<number> {
-    return this.page.publishReplay(1).refCount();
+  public getPage(): number {
+    return this.page;
   }
 
-  public getPageValue(): number {
-    return this.page.getValue();
+  public setPage(number: number): void {
+    this.page = number;
+    this.setNavigationChanged();
   }
 
-  public setPageValue(number: number): void {
-    this.page.next(number);
+  public getPages(): number[] {
+    return this.pages;
   }
 
-  public getPages(): Observable<[number]> {
-    return this.pages.publishReplay(1).refCount();
+  public getPerPageSize(): number {
+    return this.perPageSize;
   }
 
-  public getPagesValue(): number[] {
-    return this.pages.getValue();
+  public setPerPageSize(perPageSize: number): void {
+    this.perPageSize = perPageSize;
+    this.setNavigationChanged();
   }
 
-  public getPerPageSize(): Observable<number> {
-    return this.perPageSize.publishReplay(1).refCount();
+  public getPageElements(): number {
+    return this.pageElements;
   }
 
-  public getPerPageSizeValue(): number {
-    return this.perPageSize.getValue();
+  public getTotalElements(): number {
+    return this.totalElements;
   }
 
-  public setPerPageSizeValue(perPageSize: number): void {
-    this.perPageSize.next(perPageSize);
+  public getSortProperty(): string {
+    return this.sortProperty;
   }
 
-  public getPageElements(): Observable<number> {
-    return this.pageElements.publishReplay(1).refCount();
+  public setSortProperty(property: string): void {
+    this.sortProperty = property;
+    this.setNavigationChanged();
   }
 
-  public getPageElementsValue(): number {
-    return this.pageElements.getValue();
+  public getSortOrder(): string {
+    return this.sortOrder;
   }
 
-  public getTotalElements(): Observable<number> {
-    return this.totalElements.publishReplay(1).refCount();
-  }
-
-  public getTotalElementsValue(): number {
-    return this.totalElements.getValue();
-  }
-
-  public getSortProperty(): Observable<string> {
-    return this.sortProperty.publishReplay(1).refCount();
-  }
-
-  public getSortPropertyValue(): string {
-    return this.sortProperty.getValue();
-  }
-
-  public setSortPropertyValue(property: string): void {
-    this.sortProperty.next(property);
-  }
-
-  public getSortOrder(): Observable<string> {
-    return this.sortOrder.publishReplay(1).refCount();
-  }
-
-  public getSortOrderValue(): string {
-    return this.sortOrder.getValue();
-  }
-
-  public setSortOrderValue(sortOrder: string): void {
-    this.sortOrder.next(sortOrder);
+  public setSortOrder(sortOrder: string): void {
+    this.sortOrder = sortOrder;
+    this.setNavigationChanged();
   }
 
   public fromResponse(pageable: Pageable): void {
@@ -120,12 +90,22 @@ export class Pagination {
     for (let i = 1; i < pageable.totalPages; i++) {
       pages.push(i);
     }
-    this.pages.next(pages);
-    this.pageElements.next(pageable.numberOfElements);
-    this.totalElements.next(pageable.totalElements);
+    this.pages = pages;
+    this.pageElements = pageable.numberOfElements;
+    this.totalElements = pageable.totalElements;
+    this.setDataChanged();
   }
 
   public toReqParamURIPart(): string {
-    return (`?page=${this.page.getValue()}&size=${this.perPageSize.getValue()}&sort=${this.sortProperty.getValue()},${this.sortOrder.getValue()}`);
+    return (`?page=${this.page}&size=${this.perPageSize}&sort=${this.sortProperty},${this.sortOrder}`);
+  }
+
+  private setNavigationChanged(): void {
+    this.navigationSubject.next(this);
+    this.setDataChanged();
+  }
+
+  private setDataChanged(): void {
+    this.dataSubject.next(this);
   }
 }
