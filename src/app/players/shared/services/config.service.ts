@@ -13,7 +13,7 @@ export class ConfigService extends StompConfigService {
 
   public get(): Observable<StompConfig> {
     const conf: StompConfig = {
-      url: this.getWSURL(),
+      url: ConfigService.getWSURL(),
       headers: {
         login: "guest",
         passcode: "guest"
@@ -26,8 +26,8 @@ export class ConfigService extends StompConfigService {
     return Observable.of(conf);
   }
 
-  private getWSURL(): string {
-    var loc = window.location, new_uri;
+  private static getWSURL(): string {
+    let loc = window.location, new_uri;
     if (loc.protocol === "https:") {
       new_uri = "wss:";
     } else {

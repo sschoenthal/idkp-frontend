@@ -117,7 +117,7 @@ export class Pagination {
 
   public fromResponse(pageable: Pageable): void {
     let pages: number[] = [0];
-    for (var i = 1; i < pageable.totalPages; i++) {
+    for (let i = 1; i < pageable.totalPages; i++) {
       pages.push(i);
     }
     this.pages.next(pages);

@@ -13,7 +13,7 @@ import {StompService} from '@stomp/ng2-stompjs';
 
 import * as _ from 'lodash';
 
-import {Player} from '.././models/player.model'
+import {Player} from '../models/player.model'
 import {PlayerChange} from "../models/playerChange.model";
 import {Pagination} from '../../../common/utils/pagination.util';
 import {Pageable} from "../../../common/utils/pageable.model";
@@ -50,7 +50,7 @@ export class PlayerService {
       .map(res => <Player[]>res.json().content)
       .subscribe(
         p => this.players.next(p),
-        this.handleError,
+        PlayerService.handleError,
         this.subscribeToPlayerTopic
       );
   }
@@ -58,29 +58,29 @@ export class PlayerService {
   public delete(id: number): void {
     this.http.delete(this.REST_URI + id)
       .subscribe(res => console.log(res.status),
-        this.handleError,
-        this.handleComplete);
+        PlayerService.handleError,
+        PlayerService.handleComplete);
   }
 
   public update(id: number, name: String): void {
     this.http.post(this.REST_URI + id + '/' + name, null)
       .subscribe(res => console.log(res.status),
-        this.handleError,
-        this.handleComplete);
+        PlayerService.handleError,
+        PlayerService.handleComplete);
   }
 
   public create(name: String): void {
     this.http.put(this.REST_URI + name, null)
       .subscribe(res => console.log(res.status),
-        this.handleError,
-        this.handleComplete);
+        PlayerService.handleError,
+        PlayerService.handleComplete);
   }
 
-  private handleComplete(): void {
+  private static handleComplete(): void {
     console.info('Observable completed');
   }
 
-  private handleError(error: any): any {
+  private static handleError(error: any): any {
     console.error('An error occurred:', error);
     return Observable.throw(error);
   }
@@ -90,10 +90,10 @@ export class PlayerService {
       this.webSocketMessages = this.stompService.subscribe('/idkp/topic/players');
       this.webSocketSubscription = this.webSocketMessages.subscribe(this.playerChanged);
     }
-  }
+  };
 
   private playerChanged = (message: Message): void => {
-    var playerChange: PlayerChange = JSON.parse(message.body);
+    let playerChange: PlayerChange = JSON.parse(message.body);
     switch (playerChange.changeType) {
       case "CREATED": {
         this.addPlayerToSubject(playerChange.notifyable);
@@ -108,7 +108,7 @@ export class PlayerService {
         break;
       }
     }
-  }
+  };
 
   private removePlayerFromSubject(player: Player): void {
     const newPlayers = this.players.getValue();
