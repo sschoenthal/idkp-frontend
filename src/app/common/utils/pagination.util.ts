@@ -20,7 +20,7 @@ export class Pagination {
   private dataSubject: BehaviorSubject<Pagination>;
 
   /**
-   * Create a new pagination instance providing it's initial configuration regarding selected page number, page size and sort property name.
+   * Create a new pagination instance providing its initial configuration regarding selected page number, page size and sort property name.
    */
   constructor(page: number, pageSize: number, sortProperty: string) {
     this.page = page;
@@ -36,7 +36,7 @@ export class Pagination {
 
   /**
    * Retrieve the pagination observable for navigation.
-   * This observable is only triggered if a member was changed which is relevant for reloading content from the back-end.
+   * This observable is only triggered if a member if changed which is relevant for reloading content from the back-end.
    */
   public getNavigationObservable(): Observable<Pagination> {
     return (this.navigationSubject).publishReplay(1).refCount();
@@ -44,7 +44,7 @@ export class Pagination {
 
   /**
    * Retrieve the pagination observable.
-   * This observable is triggered if any member was changed.
+   * This observable is triggered if any member is changed.
    */
   public getObservable(): Observable<Pagination> {
     return (this.dataSubject).publishReplay(1).refCount();
