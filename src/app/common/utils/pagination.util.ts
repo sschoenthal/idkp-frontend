@@ -1,7 +1,7 @@
 import {Pageable} from "./pageable.model";
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Observable} from "rxjs/Observable";
-/*
+/**
  * Utility class to support pagination of content retrieved from backend.
  */
 export class Pagination {
@@ -19,7 +19,7 @@ export class Pagination {
   private navigationSubject: BehaviorSubject<Pagination>;
   private dataSubject: BehaviorSubject<Pagination>;
 
-  /*
+  /**
    * Create a new pagination instance providing it's initial configuration regarding selected page number, page size and sort property name.
    */
   constructor(page: number, pageSize: number, sortProperty: string) {
@@ -34,7 +34,7 @@ export class Pagination {
     this.dataSubject = new BehaviorSubject(this);
   }
 
-  /*
+  /**
    * Retrieve the pagination observable for navigation.
    * This observable is only triggered if a member was changed which is relevant for reloading content from the back-end.
    */
@@ -42,7 +42,7 @@ export class Pagination {
     return (this.navigationSubject).publishReplay(1).refCount();
   }
 
-  /*
+  /**
    * Retrieve the pagination observable.
    * This observable is triggered if any member was changed.
    */
@@ -50,14 +50,14 @@ export class Pagination {
     return (this.dataSubject).publishReplay(1).refCount();
   }
 
-  /*
+  /**
    * Retrieve the current page number.
    */
   public getPage(): number {
     return this.page;
   }
 
-  /*
+  /**
    * Change the current page number.
    * This member is subject to navigation, so the navigation observable will be triggered.
    */
@@ -66,21 +66,21 @@ export class Pagination {
     this.setNavigationChanged();
   }
 
-  /*
+  /**
    * Retrieve the currently available pages.
    */
   public getPages(): number[] {
     return this.pages;
   }
 
-  /*
+  /**
    * Retrieve the setting for page size (max. number of elements shown on a page).
    */
   public getPerPageSize(): number {
     return this.perPageSize;
   }
 
-  /*
+  /**
    * Change the current page size (max. number of elements shown on a page).
    * This member is subject to navigation, so the navigation observable will be triggered.
    */
@@ -89,28 +89,28 @@ export class Pagination {
     this.setNavigationChanged();
   }
 
-  /*
+  /**
    * Retrieve number of elements on the current page.
    */
   public getPageElements(): number {
     return this.pageElements;
   }
 
-  /*
+  /**
    * Retrieve total number of elements (from all pages)
    */
   public getTotalElements(): number {
     return this.totalElements;
   }
 
-  /*
+  /**
    * Retrieve the setting for the sort property.
    */
   public getSortProperty(): string {
     return this.sortProperty;
   }
 
-  /*
+  /**
    * Change the sort property.
    * This member is subject to navigation, so the navigation observable will be triggered.
    */
@@ -119,14 +119,14 @@ export class Pagination {
     this.setNavigationChanged();
   }
 
-  /*
+  /**
    * Retrieve the setting for the sort order. (asc/desc)
    */
   public getSortOrder(): string {
     return this.sortOrder;
   }
 
-  /*
+  /**
    * Change the sort order (asc/desc).
    * This member is subject to navigation, so the navigation observable will be triggered.
    */
@@ -135,7 +135,7 @@ export class Pagination {
     this.setNavigationChanged();
   }
 
-  /*
+  /**
    * Initialize pagination according to the given pageable information.
    */
   public fromResponse(pageable: Pageable): void {
@@ -149,7 +149,7 @@ export class Pagination {
     this.setDataChanged();
   }
 
-  /*
+  /**
    * Retrieve a partial URI containing pagination information subject to navigation (retrieval of backend content)
    */
   public toReqParamURIPart(): string {
