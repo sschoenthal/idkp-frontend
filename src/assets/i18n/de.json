@@ -2,7 +2,10 @@
   "YES": "ja",
   "NO": "nein",
   "HOME": {
-    "PLAYER": "Spieler"
+    "PLAYERS": "Spieler",
+    "RAIDS": "Schlachtzüge",
+    "EVENTS": "Anlässe",
+    "SETTINGS": "Einstellungen"
   },
   "PLAYER": {
     "LIST": {
@@ -42,6 +45,102 @@
         "ID": "Id",
         "NAME": "Name",
         "DEBUFF": "Debuff"
+      }
+    }
+  },
+  "RAID": {
+    "LIST": {
+      "PERPAGE": {
+        "SMALL": "klein",
+        "MEDIUM": "mittel",
+        "LARGE": "gross"
+      },
+      "SORTPROPERTY": {
+        "ID": "id",
+        "NAME": "name"
+      },
+      "SORTORDER": {
+        "ASC": "aufsteigend",
+        "DESC": "absteigend"
+      },
+      "ELEMENTS": "Angezeigt",
+      "TOTALELEMENTS": "Total"
+    },
+    "CONFIRM": {
+      "DELETE": {
+        "HEADER": "Löschen bestätigen",
+        "MESSAGE": "Bist Du sicher dass Du den Schlachtzug {{value}} löschen möchtest?"
+      }
+    },
+    "DETAILS": {
+      "HEADER": "Schlachtzug Details",
+      "ACTION": {
+        "HEADER": "Aktion",
+        "SAVE": "speichern",
+        "DELETE": "löschen",
+        "ADD": "hinzufügen",
+        "EDIT": "bearbeiten"
+      },
+      "FIELD": {
+        "ID": "Id",
+        "NAME": "Name"
+      }
+    }
+  },
+  "EVENT": {
+    "LIST": {
+      "PERPAGE": {
+        "SMALL": "klein",
+        "MEDIUM": "mittel",
+        "LARGE": "gross"
+      },
+      "SORTPROPERTY": {
+        "ID": "id",
+        "RAID": "schlachtzug",
+        "DATE": "datum",
+        "DIFFICULTY": "schwierigkeitsgrad"
+      },
+      "SORTORDER": {
+        "ASC": "aufsteigend",
+        "DESC": "absteigend"
+      },
+      "ELEMENTS": "Angezeigt",
+      "TOTALELEMENTS": "Total"
+    },
+    "CONFIRM": {
+      "DELETE": {
+        "HEADER": "Löschen bestätigen",
+        "MESSAGE": "Bist Du sicher dass Du den Anlass {{value}} löschen möchtest?"
+      }
+    },
+    "DETAILS": {
+      "HEADER": "Anlass Details",
+      "ACTION": {
+        "HEADER": "Aktion",
+        "SAVE": "speichern",
+        "DELETE": "löschen",
+        "ADD": "hinzufügen",
+        "EDIT": "bearbeiten"
+      },
+      "FIELD": {
+        "ID": "Id",
+        "RAID": "Schlachtzug",
+        "DATE": "Datum",
+        "DIFFICULTY": "Schwierigkeitsgrad"
+      }
+    }
+  },
+  "SETTING": {
+    "DETAILS": {
+      "HEADER": "Einstellungs Details",
+      "ACTION": {
+        "HEADER": "Aktion",
+        "SAVE": "speichern",
+        "EDIT": "bearbeiten"
+      },
+      "FIELD": {
+        "ID": "Id",
+        "VALUE": "Wert"
       }
     }
   }

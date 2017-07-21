@@ -1,0 +1,33 @@
+<table>
+  <tr>
+    <th>{{'SETTING.DETAILS.FIELD.ID' | translate}}</th>
+    <th>{{'SETTING.DETAILS.FIELD.VALUE' | translate}}</th>
+    <th>{{'SETTING.DETAILS.ACTION.HEADER' | translate}}</th>
+  </tr>
+  <tr *ngFor="let setting of (getSettings() | async)">
+    <td>{{ setting.id }}</td>
+    <td>{{ setting.value }}</td>
+    <td>
+      <button pButton (click)="showDialogToEdit(setting)" label="{{'SETTING.DETAILS.ACTION.EDIT' | translate}}"></button>
+    </td>
+  </tr>
+</table>
+<p-dialog header="{{'SETTING.DETAILS.HEADER' | translate}}" [(visible)]="displayDialog" [responsive]="true"
+          showEffect="fade" [modal]="true">
+  <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="setting">
+    <div class="ui-g">
+      <div class="ui-g-4"><label for="id">{{'SETTING.DETAILS.FIELD.ID' | translate}}</label></div>
+      <div class="ui-g-6"><input pInputText id="id" [(ngModel)]="setting.id" disabled/></div>
+    </div>
+    <div class="ui-g">
+      <div class="ui-g-4"><label for="value">{{'SETTING.DETAILS.FIELD.VALUE' | translate}}</label></div>
+      <div class="ui-g-6"><input pInputText id="value" [(ngModel)]="setting.value"/></div>
+    </div>
+  </div>
+  <p-footer>
+    <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+      <button type="button" pButton icon="fa-check" (click)="onSaveClick()"
+              label="{{'SETTING.DETAILS.ACTION.SAVE' | translate}}"></button>
+    </div>
+  </p-footer>
+</p-dialog>

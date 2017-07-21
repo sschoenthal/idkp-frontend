@@ -34,7 +34,7 @@ export class ConfigService extends StompConfigService {
       new_uri = "ws:";
     }
     new_uri += "//" + loc.host;
-    new_uri += loc.pathname + "/players-websocket/websocket";
+    new_uri += loc.pathname + "/idkp-websocket/websocket";
     return new_uri;
   }
 }

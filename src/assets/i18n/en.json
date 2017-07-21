@@ -2,7 +2,10 @@
   "YES": "yes",
   "NO": "no",
   "HOME": {
-    "PLAYER": "Player"
+    "PLAYERS": "Players",
+    "RAIDS": "Raids",
+    "EVENTS": "Events",
+    "SETTINGS": "Settings"
   },
   "PLAYER": {
     "LIST": {
@@ -42,6 +45,102 @@
         "ID": "Id",
         "NAME": "Name",
         "DEBUFF": "Debuff"
+      }
+    }
+  },
+  "RAID": {
+    "LIST": {
+      "PERPAGE": {
+        "SMALL": "small",
+        "MEDIUM": "medium",
+        "LARGE": "large"
+      },
+      "SORTPROPERTY": {
+        "ID": "id",
+        "NAME": "name"
+      },
+      "SORTORDER": {
+        "ASC": "ascending",
+        "DESC": "descending"
+      },
+      "ELEMENTS": "list elements",
+      "TOTALELEMENTS": "total elements"
+    },
+    "CONFIRM": {
+      "DELETE": {
+        "HEADER": "Delete confirmation",
+        "MESSAGE": "Are You sure You want do delete raid {{value}}?"
+      }
+    },
+    "DETAILS": {
+      "HEADER": "Raid details",
+      "ACTION": {
+        "HEADER": "Action",
+        "SAVE": "save",
+        "DELETE": "delete",
+        "ADD": "add",
+        "EDIT": "edit"
+      },
+      "FIELD": {
+        "ID": "Id",
+        "NAME": "Name"
+      }
+    }
+  },
+  "EVENT": {
+  "LIST": {
+    "PERPAGE": {
+      "SMALL": "small",
+      "MEDIUM": "medium",
+      "LARGE": "large"
+    },
+    "SORTPROPERTY": {
+      "ID": "id",
+      "RAID": "raid",
+      "DATE": "date",
+      "DIFFICULTY": "difficulty"
+    },
+    "SORTORDER": {
+      "ASC": "ascending",
+      "DESC": "descending"
+    },
+    "ELEMENTS": "list elements",
+    "TOTALELEMENTS": "total elements"
+  },
+  "CONFIRM": {
+    "DELETE": {
+      "HEADER": "Delete confirmation",
+      "MESSAGE": "Are You sure You want do delete event {{value}}?"
+    }
+  },
+  "DETAILS": {
+    "HEADER": "Event details",
+    "ACTION": {
+      "HEADER": "Action",
+      "SAVE": "save",
+      "DELETE": "delete",
+      "ADD": "add",
+      "EDIT": "edit"
+    },
+    "FIELD": {
+      "ID": "Id",
+      "RAID": "Raid",
+      "DATE": "Date",
+      "DIFFICULTY": "Difficulty"
+    }
+  }
+},
+  "SETTING": {
+    "DETAILS": {
+      "HEADER": "Setting details",
+      "ACTION": {
+        "HEADER": "Action",
+        "SAVE": "save",
+        "EDIT": "edit"
+      },
+      "FIELD": {
+        "ID": "Id",
+        "VALUE": "Value"
       }
     }
   }

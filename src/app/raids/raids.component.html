@@ -1,0 +1,74 @@
+<button pButton (click)="showDialogToAdd()" label="{{'RAID.DETAILS.ACTION.ADD' | translate}}"></button>
+<select name="perPage" [ngModel]="(pagination.getObservable() | async).getPerPageSize()"
+        (ngModelChange)="pagination.setPerPageSize($event)">
+  <option
+    *ngFor="let perPageOption of pageSizeSelectOptions"
+    [ngValue]="perPageOption.size">
+    {{perPageOption.name | translate}}
+  </option>
+</select>
+<select name="orderBy" [ngModel]="(pagination.getObservable() | async).getSortProperty()"
+        (ngModelChange)="pagination.setSortProperty($event)">
+  <option
+    *ngFor="let sortProperty of [['id','RAID.LIST.SORTPROPERTY.ID'],['name','RAID.LIST.SORTPROPERTY.NAME']]"
+    [ngValue]="sortProperty[0]">
+    {{sortProperty[1] | translate}}
+  </option>
+</select>
+<select name="order" [ngModel]="(pagination.getObservable() | async).getSortOrder()"
+        (ngModelChange)="pagination.setSortOrder($event)">
+  <option
+    *ngFor="let sortOrder of [['asc', 'RAID.LIST.SORTORDER.ASC'],['desc','RAID.LIST.SORTORDER.DESC']]"
+    [ngValue]="sortOrder[0]">
+    {{sortOrder[1] | translate}}
+  </option>
+</select>
+({{'RAID.LIST.ELEMENTS' | translate}}:{{(pagination.getObservable() | async).getPageElements()}}/{{'RAID.LIST.TOTALELEMENTS' | translate}}:{{(pagination.getObservable() | async).getTotalElements()}})
+<button pButton
+        *ngFor="let page of (pagination.getObservable() | async).getPages()"
+        label="{{page}}"
+        [disabled]="page === pagination.getPage()"
+        (click)="pagination.setPage(page)"></button>
+<table>
+  <tr>
+    <th>{{'RAID.DETAILS.FIELD.ID' | translate}}</th>
+    <th>{{'RAID.DETAILS.FIELD.NAME' | translate}}</th>
+    <th>{{'RAID.DETAILS.ACTION.HEADER' | translate}}</th>
+  </tr>
+  <tr *ngFor="let raid of (getRaids() | async)">
+    <td>{{ raid.id }}</td>
+    <td>{{ raid.name }}</td>
+    <td>
+      <button pButton (click)="showDialogToEdit(raid)" label="{{'RAID.DETAILS.ACTION.EDIT' | translate}}"></button>
+    </td>
+  </tr>
+</table>
+<p-dialog header="{{'RAID.DETAILS.HEADER' | translate}}" [(visible)]="displayDialog" [responsive]="true"
+          showEffect="fade" [modal]="true">
+  <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="raid">
+    <div class="ui-g">
+      <div class="ui-g-4"><label for="id">{{'RAID.DETAILS.FIELD.ID' | translate}}</label></div>
+      <div class="ui-g-6"><input pInputText id="id" [(ngModel)]="raid.id" disabled/></div>
+    </div>
+    <div class="ui-g">
+      <div class="ui-g-4"><label for="name">{{'RAID.DETAILS.FIELD.NAME' | translate}}</label></div>
+      <div class="ui-g-6"><input pInputText id="name" [(ngModel)]="raid.name"/></div>
+    </div>
+  </div>
+  <p-footer>
+    <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+      <button *ngIf="!newRaid" type="button" pButton icon="fa-close" (click)="onRemoveClick()"
+              label="{{'RAID.DETAILS.ACTION.DELETE' | translate}}"></button>
+      <button *ngIf="!newRaid" type="button" pButton icon="fa-check" (click)="onSaveClick()"
+              label="{{'RAID.DETAILS.ACTION.SAVE' | translate}}"></button>
+      <button *ngIf="newRaid" type="button" pButton icon="fa-check" (click)="onAddClick()"
+              label="{{'RAID.DETAILS.ACTION.ADD' | translate}}"></button>
+    </div>
+  </p-footer>
+</p-dialog>
+<p-confirmDialog width="425" #cd>
+  <p-footer>
+    <button type="button" pButton icon="fa-close" label="{{'NO' | translate}}" (click)="cd.reject()"></button>
+    <button type="button" pButton icon="fa-check" label="{{'YES' | translate}}" (click)="cd.accept()"></button>
+  </p-footer>
+</p-confirmDialog>

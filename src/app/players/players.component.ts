@@ -14,8 +14,7 @@ import {TranslateService} from '@ngx-translate/core';
 @Component({
   selector: 'app-players',
   templateUrl: './players.component.html',
-  styleUrls: ['./players.component.css'],
-  providers: [PlayerService, ConfirmationService]
+  styleUrls: ['./players.component.css']
 })
 export class PlayersComponent {
 

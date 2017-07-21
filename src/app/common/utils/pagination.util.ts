@@ -39,7 +39,7 @@ export class Pagination {
    * This observable is only triggered if a member if changed which is relevant for reloading content from the back-end.
    */
   public getNavigationObservable(): Observable<Pagination> {
-    return (this.navigationSubject).publishReplay(1).refCount();
+    return this.navigationSubject.publishReplay(1).refCount();
   }
 
   /**
@@ -47,7 +47,7 @@ export class Pagination {
    * This observable is triggered if any member is changed.
    */
   public getObservable(): Observable<Pagination> {
-    return (this.dataSubject).publishReplay(1).refCount();
+    return this.dataSubject.publishReplay(1).refCount();
   }
 
   /**

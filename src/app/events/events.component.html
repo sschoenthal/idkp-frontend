@@ -1,0 +1,96 @@
+<button pButton (click)="showDialogToAdd()" label="{{'EVENT.DETAILS.ACTION.ADD' | translate}}"></button>
+<select name="perPage" [ngModel]="(pagination.getObservable() | async).getPerPageSize()"
+        (ngModelChange)="pagination.setPerPageSize($event)">
+  <option
+    *ngFor="let perPageOption of pageSizeSelectOptions"
+    [ngValue]="perPageOption.size">
+    {{perPageOption.name | translate}}
+  </option>
+</select>
+<select name="orderBy" [ngModel]="(pagination.getObservable() | async).getSortProperty()"
+        (ngModelChange)="pagination.setSortProperty($event)">
+  <option
+    *ngFor="let sortProperty of [['id','EVENT.LIST.SORTPROPERTY.ID'],['raid','EVENT.LIST.SORTPROPERTY.RAID'],['date','EVENT.LIST.SORTPROPERTY.DATE'],['difficulty','EVENT.LIST.SORTPROPERTY.DIFFICULTY']]"
+    [ngValue]="sortProperty[0]">
+    {{sortProperty[1] | translate}}
+  </option>
+</select>
+<select name="order" [ngModel]="(pagination.getObservable() | async).getSortOrder()"
+        (ngModelChange)="pagination.setSortOrder($event)">
+  <option
+    *ngFor="let sortOrder of [['asc', 'EVENT.LIST.SORTORDER.ASC'],['desc','EVENT.LIST.SORTORDER.DESC']]"
+    [ngValue]="sortOrder[0]">
+    {{sortOrder[1] | translate}}
+  </option>
+</select>
+({{'EVENT.LIST.ELEMENTS' | translate}}:{{(pagination.getObservable() | async).getPageElements()}}/{{'EVENT.LIST.TOTALELEMENTS' | translate}}:{{(pagination.getObservable() | async).getTotalElements()}})
+<button pButton
+        *ngFor="let page of (pagination.getObservable() | async).getPages()"
+        label="{{page}}"
+        [disabled]="page === pagination.getPage()"
+        (click)="pagination.setPage(page)"></button>
+<table>
+  <tr>
+    <th>{{'EVENT.DETAILS.FIELD.ID' | translate}}</th>
+    <th>{{'EVENT.DETAILS.FIELD.RAID' | translate}}</th>
+    <th>{{'EVENT.DETAILS.FIELD.DATE' | translate}}</th>
+    <th>{{'EVENT.DETAILS.FIELD.DIFFICULTY' | translate}}</th>
+    <th>{{'EVENT.DETAILS.ACTION.HEADER' | translate}}</th>
+  </tr>
+  <tr *ngFor="let event of (getEvents() | async)">
+    <td>{{ event.id }}</td>
+    <td>{{ event.raid.name }}</td>
+    <td>{{ event.date }}</td>
+    <td>{{ event.difficulty }}</td>
+    <td>
+      <button pButton (click)="showDialogToEdit(event)" label="{{'EVENT.DETAILS.ACTION.EDIT' | translate}}"></button>
+    </td>
+  </tr>
+</table>
+<p-dialog header="{{'EVENT.DETAILS.HEADER' | translate}}" [(visible)]="displayDialog" [responsive]="true"
+          showEffect="fade" [modal]="true">
+  <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="event">
+    <div class="ui-g">
+      <div class="ui-g-4"><label for="id">{{'EVENT.DETAILS.FIELD.ID' | translate}}</label></div>
+      <div class="ui-g-6"><input pInputText id="id" [(ngModel)]="event.id" disabled/></div>
+    </div>
+    <div class="ui-g">
+      <div class="ui-g-4"><label for="date">{{'EVENT.DETAILS.FIELD.DATE' | translate}}</label></div>
+      <div class="ui-g-6">
+        <p-calendar inputId="date" appendTo="body" [(ngModel)]="event.date" dateFormat="dd.mm.yy"></p-calendar>
+      </div>
+    </div>
+    <div class="ui-g">
+      <div class="ui-g-4"><label for="raid">{{'EVENT.DETAILS.FIELD.RAID' | translate}}</label></div>
+      <div class="ui-g-6">
+        <select id="raid" name="raid" [compareWith]="raidEquals" [ngModel]="event.raid" (ngModelChange)="event.raid = $event">
+          <option
+            *ngFor="let raid of (getRaids() | async)"
+            [ngValue]="raid">
+            {{ raid.name }}
+          </option>
+        </select>
+      </div>
+    </div>
+    <div class="ui-g">
+      <div class="ui-g-4"><label for="difficulty">{{'EVENT.DETAILS.FIELD.DIFFICULTY' | translate}}</label></div>
+      <div class="ui-g-6"><input pInputText id="difficulty" [(ngModel)]="event.difficulty"/></div>
+    </div>
+  </div>
+  <p-footer>
+    <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+      <button *ngIf="!newEvent" type="button" pButton icon="fa-close" (click)="onRemoveClick()"
+              label="{{'EVENT.DETAILS.ACTION.DELETE' | translate}}"></button>
+      <button *ngIf="!newEvent" type="button" pButton icon="fa-check" (click)="onSaveClick()"
+              label="{{'EVENT.DETAILS.ACTION.SAVE' | translate}}"></button>
+      <button *ngIf="newEvent" type="button" pButton icon="fa-check" (click)="onAddClick()"
+              label="{{'EVENT.DETAILS.ACTION.ADD' | translate}}"></button>
+    </div>
+  </p-footer>
+</p-dialog>
+<p-confirmDialog width="425" #cd>
+  <p-footer>
+    <button type="button" pButton icon="fa-close" label="{{'NO' | translate}}" (click)="cd.reject()"></button>
+    <button type="button" pButton icon="fa-check" label="{{'YES' | translate}}" (click)="cd.accept()"></button>
+  </p-footer>
+</p-confirmDialog>
